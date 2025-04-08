@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/08 16:04:51 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/08 17:34:44 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,16 @@ typedef enum e_philo_state
 	THINKING,
 	EATING,
 	SLEEPING,
-	WAITING,
-	FORK_TAKEN,
-	FORK_AVAILABLE,
-	FORK_USED,
-	FORK_RETURNED
 }	t_philo_state;
 
 typedef enum e_philo_action
 {
-	TAKE_FORK,
+	TAKE_LEFT_FORK,
+	TAKE_RIGHT_FORK,
 	EAT,
 	SLEEP,
 	THINK,
+	DIE
 }	t_philo_action;
 
 typedef enum e_philo_status
@@ -53,11 +50,14 @@ typedef enum e_philo_status
 
 typedef struct s_philo
 {
-	int	num_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	num_eat;
+	pthread_t	thread;
+	t_list		list;
+	ssize_t		start_time;
+	ssize_t		num_philo;
+	ssize_t		time_to_die;
+	ssize_t		time_to_eat;
+	ssize_t		time_to_sleep;
+	ssize_t		num_eat;
 }	t_philo;
 
 #endif

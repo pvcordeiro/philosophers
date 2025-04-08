@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:52:26 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/03 13:57:01 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/08 17:33:53 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,27 @@ char	**ft_hashmap_to_strv(t_hashmap *hashmap)
 		i++;
 	}
 	return (strv);
+}
+
+ssize_t	ft_atoi(const char *nptr)
+{
+	ssize_t	result;
+	ssize_t	sign;
+
+	result = 0;
+	sign = 1;
+	while ((*nptr && *nptr >= 9 && *nptr <= 13) || *nptr == 32)
+		nptr++;
+	if (*nptr == '+' || *nptr == '-')
+	{
+		if (*nptr == '-')
+			sign = -sign;
+		nptr++;
+	}
+	while (ft_isdigit(*nptr))
+	{
+		result = result * 10 + (*nptr - '0');
+		nptr++;
+	}
+	return (result * sign);
 }
