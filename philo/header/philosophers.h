@@ -1,18 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.c                                     :+:      :+:    :+:   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/05 17:48:46 by paude-so         ###   ########.fr       */
+/*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
+/*   Updated: 2025/04/08 15:50:18 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#ifndef PHILOSOPHERS_H
+# define PHILOSOPHERS_H
 
-int	main(int argc, char **argv)
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/time.h>
+# include <limits.h>
+# include <stdbool.h>
+# include <fcntl.h>
+# include <pthread.h>
+# include <sys/types.h>
+# include "ft_utils.h"
+
+typedef struct s_philo
 {
+	int	num_philo;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
 	
-}
+}	t_philo;
+
+#endif
