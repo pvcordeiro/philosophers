@@ -1,7 +1,7 @@
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRC =\
+SRC =	src/main.c \
         src/utils/utils1.c \
         src/utils/utils2.c \
         src/utils/utils3.c \
@@ -13,9 +13,8 @@ SRC =\
         src/utils/utils9.c \
         src/utils/utils10.c \
         src/utils/utils11.c \
-        src/ft_printf.c 		 main.c
+        src/utils/ft_printf.c
 INCLUDES = -I headers
-
 OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
@@ -32,9 +31,9 @@ clean:
 	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@rm -rf $(NAME)
+	@rm $(NAME)
 
 re: fclean all
 
-test: all
-	@./$(NAME) 5 800 200 200
+test: re
+	@./$(NAME) 5 800 200 200 100

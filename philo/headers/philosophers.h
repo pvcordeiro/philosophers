@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/12 19:54:14 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/13 00:53:53 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct e_philo
 	int					meals;
 }	t_philo;
 
-typedef struct s_tudo
+typedef struct s_all
 {
 	t_list		*philos;
 	t_list		*threads;
@@ -70,6 +70,6 @@ typedef struct s_tudo
 	size_t		time_to_sleep;
 	bool		use_num_eat;
 	size_t		num_eat;
-}	t_tudo;
+}	t_all;
 
 #endif
