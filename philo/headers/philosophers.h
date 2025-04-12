@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/08 18:28:52 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/12 19:54:14 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,35 @@ typedef enum e_philo_action
 	DIE
 }	t_philo_action;
 
-typedef enum e_philo_status
+typedef enum e_status
 {
 	ALIVE,
 	DEAD,
 	FULL
-}	t_philo_status;	
+}	t_status;	
+
+typedef struct e_philo
+{
+	int					id;
+	t_status			status;
+	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		*right_fork;
+	size_t				last_meal;
+	int					meals;
+}	t_philo;
 
 typedef struct s_tudo
 {
 	t_list		*philos;
 	t_list		*threads;
-	ssize_t		start_time;
-	ssize_t		num_philo;
-	ssize_t		time_to_die;
-	ssize_t		time_to_eat;
-	ssize_t		time_to_sleep;
-	ssize_t		num_eat;
+	t_list		*forks;
+	size_t		start_time;
+	size_t		num_philo;
+	size_t		time_to_die;
+	size_t		time_to_eat;
+	size_t		time_to_sleep;
+	bool		use_num_eat;
+	size_t		num_eat;
 }	t_tudo;
 
 #endif
