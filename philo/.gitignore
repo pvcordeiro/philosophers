@@ -1,4 +1,3 @@
-**/**.o
+obj/*
 .vscode/
 **/.DS_Store
-philo

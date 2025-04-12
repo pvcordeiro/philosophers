@@ -6,16 +6,17 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/08 17:36:05 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:29:07 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
 
-t_philo *philo(void)
+t_tudo *tudo(void)
 {
-	static t_philo	philo;
-	return (&philo);
+	static t_tudo	tudo;
+
+	return (&tudo);
 }
 
 void	add_philo(ssize_t nb)
@@ -25,7 +26,7 @@ void	add_philo(ssize_t nb)
 	i = 0;
 	while (i < nb)
 	{
-		philo()->num_philo++;
+		tudo()->num_philo++;
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/08 17:34:44 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:28:52 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,16 @@ typedef enum e_philo_status
 	FULL
 }	t_philo_status;	
 
-typedef struct s_philo
+typedef struct s_tudo
 {
-	pthread_t	thread;
-	t_list		list;
+	t_list		*philos;
+	t_list		*threads;
 	ssize_t		start_time;
 	ssize_t		num_philo;
 	ssize_t		time_to_die;
 	ssize_t		time_to_eat;
 	ssize_t		time_to_sleep;
 	ssize_t		num_eat;
-}	t_philo;
+}	t_tudo;
 
 #endif
