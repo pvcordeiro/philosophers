@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/13 00:53:53 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/15 15:45:10 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct s_all
 	size_t		time_to_die;
 	size_t		time_to_eat;
 	size_t		time_to_sleep;
-	bool		use_num_eat;
+	// bool		use_num_eat;
 	size_t		num_eat;
 }	t_all;
 

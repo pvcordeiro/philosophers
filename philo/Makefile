@@ -21,7 +21,7 @@ OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJ)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJ) -pthread
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
