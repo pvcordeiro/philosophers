@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/17 17:44:01 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/19 09:02:36 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,6 @@ int	main(int argc, char **argv)
 		ft_printf("\nphilo number: %d\nphilo address: %p", philosopher->id, philosopher);
 		current = current->next;
 	}
+	printf("\n");
 	return (0);
 }

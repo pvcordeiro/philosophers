@@ -35,5 +35,5 @@ fclean: clean
 
 re: fclean all
 
-test: re
+test: all
 	@./$(NAME) 5 800 200 200 100
