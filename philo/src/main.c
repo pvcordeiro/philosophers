@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 15:11:05 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:15:21 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,20 @@ void	print_status(t_philo *philo, t_philo_action action)
 
 void	take_forks(t_philo *philo)
 {
-	pthread_mutex_lock(philo->right_fork);
-	print_status(philo, TAKE_RIGHT_FORK);
-	pthread_mutex_lock(philo->left_fork);
-	print_status(philo, TAKE_LEFT_FORK);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(philo->right_fork);
+		print_status(philo, TAKE_RIGHT_FORK);
+		pthread_mutex_lock(philo->left_fork);
+		print_status(philo, TAKE_LEFT_FORK);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_status(philo, TAKE_LEFT_FORK);
+		pthread_mutex_lock(philo->right_fork);
+		print_status(philo, TAKE_RIGHT_FORK);
+	}
 }
 
 void	eat(t_philo *philo)
@@ -108,8 +118,16 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	if (all()->num_philo == 1)
+    {
+        think(philo);
+        pthread_mutex_lock(philo->right_fork);
+        print_status(philo, TAKE_RIGHT_FORK);
+        usleep(all()->time_to_die * 1000);
+        return (NULL);
+    }
 	if (philo->id % 2 == 0)
-		usleep(1000);
+		usleep(15000);
 	while(philo_alive(philo))
 	{
 		think(philo);
@@ -178,11 +196,9 @@ void	assign_forks(void)
 	t_list	*philo_node;
 	t_list	*fork_node;
 	t_philo	*philo;
-	size_t	i;
 
 	philo_node = all()->philos;
 	fork_node = all()->forks;
-	i = 0;
 	while (philo_node)
 	{
 		philo = philo_node->data;
@@ -191,6 +207,9 @@ void	assign_forks(void)
 		if (!fork_node)
 			fork_node = all()->forks;
 		philo->left_fork = fork_node->data;
+		fork_node = fork_node->next;
+		if (!fork_node)
+			fork_node = all()->forks;
 		philo_node = philo_node->next;
 	}
 }
