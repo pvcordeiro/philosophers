@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 20:28:59 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 20:45:27 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ bool	philo_alive(t_philo *philo)
 	bool	alive;
 	pthread_mutex_lock(&philo->philo_mutex);
 	alive = philo->status == ALIVE && (all()->num_eat == 0 || philo->meals < all()->num_eat);
+	if (all()->num_eat > 0 && philo->meals >= all()->num_eat)
+		philo->status = FULL;
 	pthread_mutex_unlock(&philo->philo_mutex);
 	return (alive);
 }
@@ -61,15 +63,15 @@ void	print_status(t_philo *philo, t_philo_action action)
 	}
 	pthread_mutex_unlock(&philo->philo_mutex);
 	if (action == TAKE_RIGHT_FORK || action == TAKE_LEFT_FORK)
-		printf("%zu %d has taken a fork\n", timestamp, philo->id);
+		printf("%zums philo[%d] has taken a fork\n", timestamp, philo->id);
 	if (action == EAT)
-		printf("%zu %d is eating\n", timestamp, philo->id);
+		printf("%zums philo[%d] is eating\n", timestamp, philo->id);
 	if (action == SLEEP)
-		printf("%zu %d is sleeping\n", timestamp, philo->id);
+		printf("%zums philo[%d] is sleeping\n", timestamp, philo->id);
 	if (action == THINK)
-		printf("%zu %d is thinking\n", timestamp, philo->id);
+		printf("%zums philo[%d] is thinking\n", timestamp, philo->id);
 	if (action == DIE)
-		printf("%zu %d died\n", timestamp, philo->id);
+		printf("%zums philo[%d] died\n", timestamp, philo->id);
 	pthread_mutex_unlock(&all()->data_mutex);
 }
 
