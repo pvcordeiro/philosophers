@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 15:07:37 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:11:05 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	get_time(void)
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000));
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
 bool	philo_alive(t_philo *philo)
@@ -108,6 +108,8 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	if (philo->id % 2 == 0)
+		usleep(1000);
 	while(philo_alive(philo))
 	{
 		think(philo);
@@ -156,7 +158,7 @@ bool	create_forks(void)
 	pthread_mutex_t	*fork;
 
 	i = 0;
-	while (++i < all()->num_philo)
+	while (i++ < all()->num_philo)
 	{
 		fork = malloc(sizeof(pthread_mutex_t));
 		if (!fork)
