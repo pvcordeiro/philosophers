@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 16:05:06 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:19:31 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ size_t	get_time(void)
 bool	philo_alive(t_philo *philo)
 {
 	bool	alive;
-	pthread_mutex_lock(&philo->mutex);
+	pthread_mutex_lock(&philo->philo_mutex);
 	alive = philo->status == ALIVE || (all()->num_eat > 0 && philo->meals < all()->num_eat);
-	pthread_mutex_unlock(&philo->mutex);
+	pthread_mutex_unlock(&philo->philo_mutex);
 	return (alive);
 }
 
@@ -40,8 +40,16 @@ void	print_status(t_philo *philo, t_philo_action action)
 {
 	size_t	timestamp;
 
+	pthread_mutex_lock(&all()->data_mutex);
 	timestamp = get_time() - all()->start_time;
-
+	pthread_mutex_lock(&philo->philo_mutex);
+	if (philo->status == DEAD && action != DIE)
+	{
+		pthread_mutex_unlock(&philo->philo_mutex);
+		pthread_mutex_unlock(&all()->data_mutex);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->philo_mutex);
 	if (action == TAKE_RIGHT_FORK || action == TAKE_LEFT_FORK)
 		printf("%zu %d has taken a fork\n", timestamp, philo->id);
 	if (action == EAT)
@@ -52,6 +60,7 @@ void	print_status(t_philo *philo, t_philo_action action)
 		printf("%zu %d is thinking\n", timestamp, philo->id);
 	if (action == DIE)
 		printf("%zu %d died\n", timestamp, philo->id);
+	pthread_mutex_unlock(&all()->data_mutex);
 }
 
 void	take_forks(t_philo *philo)
@@ -74,11 +83,11 @@ void	take_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->mutex);
+	pthread_mutex_lock(&philo->philo_mutex);
 	print_status(philo, EAT);
 	philo->last_meal = get_time();
 	philo->meals++;
-	pthread_mutex_unlock(&philo->mutex);
+	pthread_mutex_unlock(&philo->philo_mutex);
 	usleep(all()->time_to_eat * 1000);
 	
 }
@@ -114,15 +123,14 @@ int    cleanup_resources(void)
         pthread_mutex_destroy(fork);
         fork_node = fork_node->next;
     }
-    
     philo_node = all()->philos;
     while (philo_node)
     {
         philo = philo_node->data;
-        pthread_mutex_destroy(&philo->mutex);
+        pthread_mutex_destroy(&philo->philo_mutex);
         philo_node = philo_node->next;
     }
-    
+	pthread_mutex_destroy(&all()->data_mutex);
     ft_list_destroy(&all()->philos);
     ft_list_destroy(&all()->forks);
     return (1);
@@ -167,20 +175,23 @@ void	*death_monitor(void *arg)
 		while (node)
 		{
 			philo = node->data;
-			pthread_mutex_lock(&philo->mutex);
-			if ((get_time() - philo->last_meal) > all()->time_to_die)
+			pthread_mutex_lock(&philo->philo_mutex);
+			if ((get_time() - philo->last_meal) > all()->time_to_die && philo->status == ALIVE)
 			{
+				philo->status = DEAD;
+				pthread_mutex_unlock(&philo->philo_mutex);
 				print_status(philo, DIE);
 				p_node = all()->philos;
 				while (p_node)
 				{
+					pthread_mutex_lock(&((t_philo *)p_node->data)->philo_mutex);
 					((t_philo *)p_node->data)->status = DEAD;
+					pthread_mutex_unlock(&((t_philo *)p_node->data)->philo_mutex);
 					p_node = p_node->next;
 				}
-				pthread_mutex_unlock(&philo->mutex);
 				return (NULL);
 			}
-			pthread_mutex_unlock(&philo->mutex);
+			pthread_mutex_unlock(&philo->philo_mutex);
 			node = node->next;
 		}
 		usleep(1000);
@@ -246,7 +257,7 @@ bool	create_philos(void)
 		philo->id = i;
 		philo->status = ALIVE;
 		philo->meals = 0;
-		if (pthread_mutex_init(&philo->mutex, NULL) != 0)
+		if (pthread_mutex_init(&philo->philo_mutex, NULL) != 0)
         {
             free(philo);
             return (false);
@@ -282,6 +293,8 @@ bool	init_all(int argc, char **argv)
 	all()->time_to_sleep = ft_atoll(argv[4]);
 	if (argc == 6)
 		all()->num_eat = ft_atoll(argv[5]);
+	if (pthread_mutex_init(&all()->data_mutex, NULL) != 0)
+        return (false);
 	return (true);
 }
 
