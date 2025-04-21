@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 15:15:21 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:18:26 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@ void	print_status(t_philo *philo, t_philo_action action)
 
 	timestamp = get_time() - all()->start_time;
 
-	if (action == TAKE_RIGHT_FORK)
-		printf("%zu %d has taken right fork\n", timestamp, philo->id);
-	if (action == TAKE_LEFT_FORK)
-		printf("%zu %d has taken left fork\n", timestamp, philo->id);
+	if (action == TAKE_RIGHT_FORK || action == TAKE_LEFT_FORK)
+		printf("%zu %d has taken a fork\n", timestamp, philo->id);
 	if (action == EAT)
 		printf("%zu %d is eating\n", timestamp, philo->id);
 	if (action == SLEEP)
