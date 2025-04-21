@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 14:29:38 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 14:54:01 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ void	print_status(t_philo *philo, t_philo_action action)
 	timestamp = get_time() - all()->start_time;
 
 	if (action == TAKE_RIGHT_FORK)
-		ft_printf("%d %d has taken right fork\n", timestamp, philo->id);
+		printf("%zu %d has taken right fork\n", timestamp, philo->id);
 	if (action == TAKE_LEFT_FORK)
-		ft_printf("%zu %d has taken left fork\n", timestamp, philo->id);
+		printf("%zu %d has taken left fork\n", timestamp, philo->id);
 	if (action == EAT)
-		ft_printf("%zu %d is eating\n", timestamp, philo->id);
+		printf("%zu %d is eating\n", timestamp, philo->id);
 	if (action == SLEEP)
-		ft_printf("%zu %d is sleeping\n", timestamp, philo->id);
+		printf("%zu %d is sleeping\n", timestamp, philo->id);
 	if (action == THINK)
-		ft_printf("%zu %d is thinking\n", timestamp, philo->id);
+		printf("%zu %d is thinking\n", timestamp, philo->id);
 	if (action == DIE)
-		ft_printf("%zu %d died\n", timestamp, philo->id);
+		printf("%zu %d died\n", timestamp, philo->id);
 }
 
 void	take_forks(t_philo *philo)
@@ -218,14 +218,19 @@ bool	positive(long long arg)
 	return (true);
 }
 
-bool	init_all(int argc, char **argv)
+bool	check_positive(int argc, char **argv)
 {
 	int i = 0;
 	while (++i < argc)
 	{
 		if (!positive(ft_atoll(argv[i])))
-			exit(ft_printf("Only positive numbers allowed\n"));
+			return(false);
 	}
+	return (true);
+}
+
+bool	init_all(int argc, char **argv)
+{
 	all()->num_philo = ft_atoll(argv[1]);
 	all()->time_to_die = ft_atoll(argv[2]);
 	all()->time_to_eat = ft_atoll(argv[3]);
@@ -242,17 +247,18 @@ bool	create_threads(void)
 	pthread_t	monitor;
 
 	all()->start_time = get_time();
+	printf("START_TIME: %zu\n", all()->start_time);
 	node = all()->philos;
 	while (node)
 	{
 		philo = node->data;
 		philo->last_meal = all()->start_time;
 		if (pthread_create(&philo->thread, NULL, philo_routine, philo))
-			return (ft_printf("Error creating philosopher thread\n"), false);
+			return (printf("Error creating philosopher thread\n"), false);
 		node = node->next;
 	}
 	if (pthread_create(&monitor, NULL, death_monitor, NULL) != 0)
-		return (ft_printf("Error creating monitor thread\n"), false);
+		return (printf("Error creating monitor thread\n"), false);
 	all()->monitor_thread = monitor;
 	return (0);
 }
@@ -267,24 +273,26 @@ bool	join_threads(void)
 	{
 		philo = node->data;
 		if (pthread_join(philo->thread, NULL) != 0)
-			return (ft_printf("Error joining philosopher thread\n"), false);
+			return (printf("Error joining philosopher thread\n"), false);
 		node = node->next;
 	}
 	if (pthread_join(all()->monitor_thread, NULL) != 0)
-		return (ft_printf("Error joinining monitor thread\n"), false);
+		return (printf("Error joinining monitor thread\n"), false);
 	return (true);
 }
 
 int	main(int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
-		return (ft_printf("Usage: number_of_philosophers time_to_die time_to_eat time_to_sleep Optional: [number_of_times_each_philosopher_must_eat]\n"));
+		return (printf("Usage: number_of_philosophers time_to_die time_to_eat time_to_sleep Optional: [number_of_times_each_philosopher_must_eat]\n"));
+	if (!check_positive(argc, argv))
+		return (printf("Only positive numbers allowed\n"));
 	if (!init_all(argc, argv))
-		return (ft_printf("Error initializing data\n"));
+		return (printf("Error initializing data\n"));
 	if (!create_forks())
-		return (ft_printf("Error creating forks\n"));
+		return (printf("Error creating forks\n"));
 	if (!create_philos())
-		return (ft_printf("Error creating philosophers\n"));
+		return (printf("Error creating philosophers\n"));
 	assign_forks();
 	if (!create_threads())
 		return (cleanup_resources());
