@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 16:25:49 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:44:12 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ bool	philo_alive(t_philo *philo)
 {
 	bool	alive;
 	pthread_mutex_lock(&philo->philo_mutex);
-	alive = philo->status == ALIVE || (all()->num_eat > 0 && philo->meals < all()->num_eat);
+	alive = philo->status == ALIVE || (all()->num_eat == 0 && philo->meals < all()->num_eat);
 	pthread_mutex_unlock(&philo->philo_mutex);
 	return (alive);
 }
@@ -167,11 +167,13 @@ void	*death_monitor(void *arg)
 	t_list	*node;
 	t_list	*p_node;
 	t_philo	*philo;
+	bool	all_full;
 
 	(void)arg;
 	while (42)
 	{
 		node = all()->philos;
+		all_full = all()->num_eat > 0;
 		while (node)
 		{
 			philo = node->data;
@@ -191,8 +193,22 @@ void	*death_monitor(void *arg)
 				}
 				return (NULL);
 			}
+			if (all_full && philo->meals < all()->num_eat)
+				all_full = false;
 			pthread_mutex_unlock(&philo->philo_mutex);
 			node = node->next;
+		}
+		if (all_full)
+		{
+			node = all()->philos;
+			while (node)
+			{
+				pthread_mutex_lock(&((t_philo *)node->data)->philo_mutex);
+				((t_philo *)node->data)->status = FULL;
+				pthread_mutex_unlock(&((t_philo *)node->data)->philo_mutex);
+				node = node->next;
+			}
+			return (NULL);
 		}
 		usleep(1000);
 	}
@@ -317,7 +333,7 @@ bool	create_threads(void)
 	if (pthread_create(&monitor, NULL, death_monitor, NULL) != 0)
 		return (printf("Error creating monitor thread\n"), false);
 	all()->monitor_thread = monitor;
-	return (0);
+	return (true);
 }
 
 bool	join_threads(void)
