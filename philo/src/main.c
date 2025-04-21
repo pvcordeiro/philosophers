@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 14:16:47 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 14:29:38 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ void	print_status(t_philo *philo, t_philo_action action)
 	timestamp = get_time() - all()->start_time;
 
 	if (action == TAKE_RIGHT_FORK)
-		ft_printf("%zu %d has taken right fork", timestamp, philo->id);
+		ft_printf("%d %d has taken right fork\n", timestamp, philo->id);
 	if (action == TAKE_LEFT_FORK)
-		ft_printf("%zu %d has taken left fork", timestamp, philo->id);
+		ft_printf("%zu %d has taken left fork\n", timestamp, philo->id);
 	if (action == EAT)
-		ft_printf("%zu %d is eating", timestamp, philo->id);
+		ft_printf("%zu %d is eating\n", timestamp, philo->id);
 	if (action == SLEEP)
-		ft_printf("%zu %d is sleeping", timestamp, philo->id);
+		ft_printf("%zu %d is sleeping\n", timestamp, philo->id);
 	if (action == THINK)
-		ft_printf("%zu %d is thinking", timestamp, philo->id);
+		ft_printf("%zu %d is thinking\n", timestamp, philo->id);
 	if (action == DIE)
-		ft_printf("%zu %d died", timestamp, philo->id);
+		ft_printf("%zu %d died\n", timestamp, philo->id);
 }
 
 void	take_forks(t_philo *philo)
@@ -68,10 +68,38 @@ void	eat(t_philo *philo)
 	usleep(all()->time_to_eat * 1000);
 }
 
-void	release_forks(t_philo *philo)
+void	think(t_philo *philo)
+{
+	print_status(philo, THINK);
+}
+
+void	sleep_philo(t_philo *philo)
 {
 	print_status(philo, SLEEP);
 	usleep(all()->time_to_sleep * 1000);
+}
+
+void	release_forks(t_philo *philo)
+{
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
+}
+
+int	cleanup_resources(void)
+{
+	t_list			*fork_node;
+	pthread_mutex_t	*fork;
+
+	fork_node = all()->forks;
+	while (fork_node)
+	{
+		fork = fork_node->data;
+		pthread_mutex_destroy(fork);
+		fork_node = fork_node->next;
+	}
+	ft_list_destroy(&all()->philos);
+	ft_list_destroy(&all()->forks);
+	return (1);
 }
 
 void	*philo_routine(void *arg)
@@ -93,8 +121,10 @@ void	*philo_routine(void *arg)
 void	*death_monitor(void *arg)
 {
 	t_list	*node;
+	t_list	*p_node;
 	t_philo	*philo;
 
+	(void)arg;
 	while (42)
 	{
 		node = all()->philos;
@@ -104,7 +134,12 @@ void	*death_monitor(void *arg)
 			if ((get_time() - philo->last_meal) > all()->time_to_die)
 			{
 				print_status(philo, DIE);
-				//TODO stop all threads
+				p_node = all()->philos;
+				while (p_node)
+				{
+					((t_philo *)p_node->data)->status = DEAD;
+					p_node = p_node->next;
+				}
 				return (NULL);
 			}
 			node = node->next;
