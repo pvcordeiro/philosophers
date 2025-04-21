@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 18:07:08 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 20:07:21 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,9 @@ void	*philo_routine(void *arg)
         pthread_mutex_lock(philo->right_fork);
         print_status(philo, TAKE_RIGHT_FORK);
         ft_usleep(all()->time_to_die);
+		philo->status = DEAD;
+		print_status(philo, DIE);
+		pthread_mutex_unlock(philo->right_fork);
         return (NULL);
     }
 	while(philo_alive(philo))
