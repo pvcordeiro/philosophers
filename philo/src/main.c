@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 16:44:12 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 18:02:12 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,16 @@ size_t	get_time(void)
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+int	ft_usleep(size_t milliseconds)
+{
+	size_t	start;
+
+	start = get_time();
+	while ((get_time() - start) < milliseconds)
+		usleep(100);
+	return (0);
 }
 
 bool	philo_alive(t_philo *philo)
@@ -65,30 +75,28 @@ void	print_status(t_philo *philo, t_philo_action action)
 
 void	take_forks(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
+	if (philo->id % 2)
 	{
 		pthread_mutex_lock(philo->right_fork);
 		print_status(philo, TAKE_RIGHT_FORK);
 		pthread_mutex_lock(philo->left_fork);
 		print_status(philo, TAKE_LEFT_FORK);
+		return ;
 	}
-	else
-	{
-		pthread_mutex_lock(philo->left_fork);
-		print_status(philo, TAKE_LEFT_FORK);
-		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, TAKE_RIGHT_FORK);
-	}
+	pthread_mutex_lock(philo->left_fork);
+	print_status(philo, TAKE_LEFT_FORK);
+	pthread_mutex_lock(philo->right_fork);
+	print_status(philo, TAKE_RIGHT_FORK);
 }
 
 void	eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->philo_mutex);
 	print_status(philo, EAT);
-	philo->last_meal = get_time();
+	ft_usleep(all()->time_to_eat);
+	pthread_mutex_lock(&philo->philo_mutex);
+.	philo->last_meal = get_time();
 	philo->meals++;
 	pthread_mutex_unlock(&philo->philo_mutex);
-	usleep(all()->time_to_eat * 1000);
 	
 }
 
@@ -100,7 +108,7 @@ void	think(t_philo *philo)
 void	sleep_philo(t_philo *philo)
 {
 	print_status(philo, SLEEP);
-	usleep(all()->time_to_sleep * 1000);
+	ft_usleep(all()->time_to_sleep);
 }
 
 void	release_forks(t_philo *philo)
@@ -146,11 +154,9 @@ void	*philo_routine(void *arg)
         think(philo);
         pthread_mutex_lock(philo->right_fork);
         print_status(philo, TAKE_RIGHT_FORK);
-        usleep(all()->time_to_die * 1000);
+        ft_usleep(all()->time_to_die);
         return (NULL);
     }
-	if (philo->id % 2 == 0)
-		usleep(1000);
 	while(philo_alive(philo))
 	{
 		think(philo);
@@ -181,8 +187,8 @@ void	*death_monitor(void *arg)
 			if ((get_time() - philo->last_meal) > all()->time_to_die && philo->status == ALIVE)
 			{
 				philo->status = DEAD;
-				pthread_mutex_unlock(&philo->philo_mutex);
 				print_status(philo, DIE);
+				pthread_mutex_unlock(&philo->philo_mutex);
 				p_node = all()->philos;
 				while (p_node)
 				{
@@ -210,7 +216,7 @@ void	*death_monitor(void *arg)
 			}
 			return (NULL);
 		}
-		usleep(1000);
+		ft_usleep(1000);
 	}
 	return (NULL);
 }
