@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 14:54:01 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:07:37 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	eat(t_philo *philo)
 	philo->last_meal = get_time();
 	philo->meals++;
 	usleep(all()->time_to_eat * 1000);
+	
 }
 
 void	think(t_philo *philo)
@@ -247,7 +248,6 @@ bool	create_threads(void)
 	pthread_t	monitor;
 
 	all()->start_time = get_time();
-	printf("START_TIME: %zu\n", all()->start_time);
 	node = all()->philos;
 	while (node)
 	{
