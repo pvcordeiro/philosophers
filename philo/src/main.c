@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 15:18:26 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:05:06 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,11 @@ size_t	get_time(void)
 
 bool	philo_alive(t_philo *philo)
 {
-	return (philo->status == ALIVE || (all()->num_eat > 0 && philo->meals < all()->num_eat));
+	bool	alive;
+	pthread_mutex_lock(&philo->mutex);
+	alive = philo->status == ALIVE || (all()->num_eat > 0 && philo->meals < all()->num_eat);
+	pthread_mutex_unlock(&philo->mutex);
+	return (alive);
 }
 
 void	print_status(t_philo *philo, t_philo_action action)
@@ -70,9 +74,11 @@ void	take_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->mutex);
 	print_status(philo, EAT);
 	philo->last_meal = get_time();
 	philo->meals++;
+	pthread_mutex_unlock(&philo->mutex);
 	usleep(all()->time_to_eat * 1000);
 	
 }
@@ -94,21 +100,32 @@ void	release_forks(t_philo *philo)
 	pthread_mutex_unlock(philo->right_fork);
 }
 
-int	cleanup_resources(void)
+int    cleanup_resources(void)
 {
-	t_list			*fork_node;
-	pthread_mutex_t	*fork;
+    t_list          *fork_node;
+    t_list          *philo_node;
+    pthread_mutex_t *fork;
+    t_philo         *philo;
 
-	fork_node = all()->forks;
-	while (fork_node)
-	{
-		fork = fork_node->data;
-		pthread_mutex_destroy(fork);
-		fork_node = fork_node->next;
-	}
-	ft_list_destroy(&all()->philos);
-	ft_list_destroy(&all()->forks);
-	return (1);
+    fork_node = all()->forks;
+    while (fork_node)
+    {
+        fork = fork_node->data;
+        pthread_mutex_destroy(fork);
+        fork_node = fork_node->next;
+    }
+    
+    philo_node = all()->philos;
+    while (philo_node)
+    {
+        philo = philo_node->data;
+        pthread_mutex_destroy(&philo->mutex);
+        philo_node = philo_node->next;
+    }
+    
+    ft_list_destroy(&all()->philos);
+    ft_list_destroy(&all()->forks);
+    return (1);
 }
 
 void	*philo_routine(void *arg)
@@ -150,6 +167,7 @@ void	*death_monitor(void *arg)
 		while (node)
 		{
 			philo = node->data;
+			pthread_mutex_lock(&philo->mutex);
 			if ((get_time() - philo->last_meal) > all()->time_to_die)
 			{
 				print_status(philo, DIE);
@@ -159,8 +177,10 @@ void	*death_monitor(void *arg)
 					((t_philo *)p_node->data)->status = DEAD;
 					p_node = p_node->next;
 				}
+				pthread_mutex_unlock(&philo->mutex);
 				return (NULL);
 			}
+			pthread_mutex_unlock(&philo->mutex);
 			node = node->next;
 		}
 		usleep(1000);
@@ -174,7 +194,7 @@ bool	create_forks(void)
 	pthread_mutex_t	*fork;
 
 	i = 0;
-	while (i++ < all()->num_philo)
+	while (++i <= all()->num_philo)
 	{
 		fork = malloc(sizeof(pthread_mutex_t));
 		if (!fork)
@@ -226,6 +246,11 @@ bool	create_philos(void)
 		philo->id = i;
 		philo->status = ALIVE;
 		philo->meals = 0;
+		if (pthread_mutex_init(&philo->mutex, NULL) != 0)
+        {
+            free(philo);
+            return (false);
+        }
 		ft_list_add(&all()->philos, philo, free);
 	}
 	return (true);

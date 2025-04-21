@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 14:31:00 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:05:19 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct e_philo
 	t_status			status;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
+	pthread_mutex_t		mutex;
 	size_t				last_meal;
 	size_t				meals;
 	pthread_t			thread;
@@ -61,16 +62,17 @@ typedef struct e_philo
 
 typedef struct s_all
 {
-	t_list		*philos;
-	t_list		*threads;
-	t_list		*forks;
-	pthread_t	monitor_thread;
-	size_t		start_time;
-	size_t		num_philo;
-	size_t		time_to_die;
-	size_t		time_to_eat;
-	size_t		time_to_sleep;
-	size_t		num_eat;
+	t_list			*philos;
+	t_list			*threads;
+	t_list			*forks;
+	pthread_t		monitor_thread;
+	size_t			start_time;
+	size_t			num_philo;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	size_t			num_eat;
+	pthread_mutex_t	status_mutex;
 }	t_all;
 
 #endif

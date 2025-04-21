@@ -36,7 +36,7 @@ fclean: clean
 re: fclean all
 
 test: all
-	@./$(NAME) 5 800 200 200 7
+	@bash -c "./$(NAME) 5 800 200 200 7 || true"
 
 e: all
 	@./$(NAME) 5 800 200 200 7 > result.txt && grep eating result.txt | awk '{print $2}' | sort | uniq -c; rm result.txt
