@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 16:19:31 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:25:49 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void	*philo_routine(void *arg)
         return (NULL);
     }
 	if (philo->id % 2 == 0)
-		usleep(15000);
+		usleep(1000);
 	while(philo_alive(philo))
 	{
 		think(philo);
