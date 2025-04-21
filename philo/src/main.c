@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/21 13:57:22 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/21 14:16:47 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,19 @@ void	print_status(t_philo *philo, t_philo_action action)
 	size_t	timestamp;
 
 	timestamp = get_time() - all()->start_time;
-	//TODO
+
+	if (action == TAKE_RIGHT_FORK)
+		ft_printf("%zu %d has taken right fork", timestamp, philo->id);
+	if (action == TAKE_LEFT_FORK)
+		ft_printf("%zu %d has taken left fork", timestamp, philo->id);
+	if (action == EAT)
+		ft_printf("%zu %d is eating", timestamp, philo->id);
+	if (action == SLEEP)
+		ft_printf("%zu %d is sleeping", timestamp, philo->id);
+	if (action == THINK)
+		ft_printf("%zu %d is thinking", timestamp, philo->id);
+	if (action == DIE)
+		ft_printf("%zu %d died", timestamp, philo->id);
 }
 
 void	take_forks(t_philo *philo)
@@ -230,12 +242,9 @@ bool	join_threads(void)
 
 int	main(int argc, char **argv)
 {
-	t_list		*node;
-	t_philo		*philo;
-
 	if (argc < 5 || argc > 6)
 		return (ft_printf("Usage: number_of_philosophers time_to_die time_to_eat time_to_sleep Optional: [number_of_times_each_philosopher_must_eat]\n"));
-	if (!init_all(argc, argv));
+	if (!init_all(argc, argv))
 		return (ft_printf("Error initializing data\n"));
 	if (!create_forks())
 		return (ft_printf("Error creating forks\n"));
