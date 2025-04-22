@@ -6,13 +6,13 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:00:29 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/22 13:03:18 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:08:47 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
 
-t_all *all(void)
+t_all	*all(void)
 {
 	static t_all	all;
 

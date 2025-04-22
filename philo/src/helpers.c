@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:13:33 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/22 14:03:14 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:09:10 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ bool	init_all(int argc, char **argv)
 	if (argc == 6)
 		all()->num_eat = ft_atoll(argv[5]);
 	if (pthread_mutex_init(&all()->data_mutex, NULL) != 0)
-        return (false);
+		return (false);
 	return (true);
 }
 
-bool	check_positive(int argc, char **argv)
+bool	check_valid_arg(int argc, char **argv)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (++i < argc)
