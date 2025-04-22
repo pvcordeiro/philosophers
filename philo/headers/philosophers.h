@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/22 13:21:16 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:04:55 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct s_all
 }	t_all;
 
 // singleton
-t_all *all(void);
+t_all	*all(void);
 
 // threads
 bool	create_threads(void);

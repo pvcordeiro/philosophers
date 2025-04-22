@@ -58,8 +58,8 @@ void	assign_forks(void)
 
 bool	create_philos(void)
 {
-	size_t			i;
-	t_philo 		*philo;
+	size_t	i;
+	t_philo	*philo;
 
 	i = 0;
 	while (++i <= all()->num_philo)
@@ -71,10 +71,10 @@ bool	create_philos(void)
 		philo->status = ALIVE;
 		philo->meals = 0;
 		if (pthread_mutex_init(&philo->philo_mutex, NULL) != 0)
-        {
-            free(philo);
-            return (false);
-        }
+		{
+			free(philo);
+			return (false);
+		}
 		ft_list_add(&all()->philos, philo, free);
 	}
 	return (true);

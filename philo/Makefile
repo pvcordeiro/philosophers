@@ -47,7 +47,7 @@ test: all
 	@bash -c "./$(NAME) 5 800 200 200 7 || true"
 
 e: all
-	@./$(NAME) 5 800 200 200 7 > result.txt && grep eating result.txt | awk '{print $2}' | sort | uniq -c; rm result.txt
+	@bash -c "./$(NAME) 5 800 200 200 7 > result.txt && grep eating result.txt | awk '{print $2}' | sort | uniq -c; rm result.txt  || true"
 
 val:
 	$(LEAK) ./$(NAME) 1 800 200 200
