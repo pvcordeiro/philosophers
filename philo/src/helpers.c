@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:13:33 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/22 13:17:28 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:03:14 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ bool	check_positive(int argc, char **argv)
 	i = 0;
 	while (++i < argc)
 	{
-		if (ft_atoll(argv[i]) < 0)
-			return(false);
+		if (ft_atoll(argv[i]) < 0 || ft_atoll(argv[i]) == 0)
+			return (false);
 	}
 	return (true);
 }

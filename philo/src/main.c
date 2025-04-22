@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/22 13:46:06 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:02:13 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	main(int argc, char **argv)
 	if (argc < 5 || argc > 6)
 		return (printf("Usage: number_of_philosophers time_to_die time_to_eat time_to_sleep Optional: [number_of_times_each_philosopher_must_eat]\n"));
 	if (!check_positive(argc, argv))
-		return (printf("Only positive numbers allowed\n"));
+		return (printf("Invalid argument\n"));
 	if (!init_all(argc, argv))
 		return (printf("Error initializing data\n"));
 	if (!create_forks())
