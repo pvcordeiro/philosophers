@@ -6,13 +6,13 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 17:45:00 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:51:05 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
 
-int	cleanup_resources(void)
+static int	destructor(void)
 {
 	t_list			*fork_node;
 	t_list			*philo_node;
@@ -48,14 +48,14 @@ int	main(int argc, char **argv)
 	if (!init_all(argc, argv))
 		return (ft_printf("Error initializing data\n"));
 	if (!create_forks())
-		return (ft_printf("Error creating forks\n"));
+		return (destructor(), ft_printf("Error creating forks\n"));
 	if (!create_philos())
-		return (ft_printf("Error creating philosophers\n"));
+		return (destructor(), ft_printf("Error creating philosophers\n"));
 	assign_forks();
 	if (!create_threads())
-		return (cleanup_resources());
+		return (destructor());
 	if (!join_threads())
-		return (cleanup_resources());
-	cleanup_resources();
+		return (destructor());
+	destructor();
 	return (0);
 }
