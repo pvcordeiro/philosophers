@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:02:25 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 16:09:54 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:28:41 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ void	take_forks(t_philo *philo)
 	if (philo->left_fork < philo->right_fork)
 	{
 		pthread_mutex_lock(philo->left_fork);
-		print_status(philo, TAKE_LEFT_FORK);
+		print_status(philo, TAKE_FORK);
 		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, TAKE_RIGHT_FORK);
+		print_status(philo, TAKE_FORK);
 		return ;
 	}
 	pthread_mutex_lock(philo->right_fork);
-	print_status(philo, TAKE_RIGHT_FORK);
+	print_status(philo, TAKE_FORK);
 	pthread_mutex_lock(philo->left_fork);
-	print_status(philo, TAKE_LEFT_FORK);
+	print_status(philo, TAKE_FORK);
 }
 
 void	eat(t_philo *philo)

@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/22 14:08:13 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:28:13 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ typedef enum e_philo_state
 
 typedef enum e_philo_action
 {
-	TAKE_LEFT_FORK,
-	TAKE_RIGHT_FORK,
+	TAKE_FORK,
 	EAT,
 	SLEEP,
 	THINK,

@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 18:04:05 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:28:28 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	*philo_routine(void *arg)
 	if (all()->num_philo == 1)
 	{
 		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, TAKE_RIGHT_FORK);
+		print_status(philo, TAKE_FORK);
 		pthread_mutex_lock(&philo->philo_mutex);
 		philo->status = DEAD;
 		pthread_mutex_unlock(&philo->philo_mutex);
