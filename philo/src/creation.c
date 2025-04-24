@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:07:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/22 13:17:24 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:56:17 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ bool	create_forks(void)
 		if (!fork)
 			return (false);
 		if (pthread_mutex_init(fork, NULL) != 0)
-		{
-			free(fork);
-			return (false);
-		}
+			return (free(fork), false);
 		ft_list_add(&all()->forks, fork, free);
 	}
 	return (true);
@@ -71,10 +68,7 @@ bool	create_philos(void)
 		philo->status = ALIVE;
 		philo->meals = 0;
 		if (pthread_mutex_init(&philo->philo_mutex, NULL) != 0)
-		{
-			free(philo);
-			return (false);
-		}
+			return (free(philo), false);
 		ft_list_add(&all()->philos, philo, free);
 	}
 	return (true);
