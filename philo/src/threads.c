@@ -6,21 +6,11 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 19:32:59 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 19:42:46 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
-
-static bool	philo_alive(t_philo *philo)
-{
-	bool	alive;
-
-	pthread_mutex_lock(&philo->philo_mutex);
-	alive = philo->status == ALIVE;
-	pthread_mutex_unlock(&philo->philo_mutex);
-	return (alive);
-}
 
 static void	*philo_routine(void *arg)
 {
@@ -65,9 +55,7 @@ static void	*death_monitor(void *arg)
 		{
 			philo = node->data;
 			pthread_mutex_lock(&philo->philo_mutex);
-			if (philo->status == DEAD || ((get_time()
-						- philo->last_meal) > all()->time_to_die
-					&& philo->status == ALIVE))
+			if ((get_time() - philo->last_meal) > all()->time_to_die)
 			{
 				philo->status = DEAD;
 				pthread_mutex_unlock(&philo->philo_mutex);
@@ -77,7 +65,7 @@ static void	*death_monitor(void *arg)
 				pthread_mutex_unlock(&all()->data_mutex);
 				return (NULL);
 			}
-			if (all_full && philo->meals < all()->num_eat)
+			if (philo->meals < all()->num_eat)
 				all_full = false;
 			pthread_mutex_unlock(&philo->philo_mutex);
 			node = node->next;

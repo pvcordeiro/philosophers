@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 19:30:35 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 19:42:09 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ size_t	get_time(void);
 int		ft_usleep(size_t milliseconds);
 bool	check_valid_arg(int argc, char **argv);
 void	handle_one(t_philo *philo);
+bool	philo_alive(t_philo *philo);
 
 // printer
 void	print_status(t_philo *philo, t_philo_action action);
