@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 18:40:12 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:48:33 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,6 @@
 # include <sys/types.h>
 # include "ft_utils.h"
 
-typedef enum e_philo_state
-{
-	THINKING,
-	EATING,
-	SLEEPING,
-}	t_philo_state;
-
 typedef enum e_philo_action
 {
 	TAKE_FORK,
@@ -44,7 +37,6 @@ typedef enum e_status
 {
 	ALIVE,
 	DEAD,
-	FULL
 }	t_status;	
 
 typedef struct e_philo

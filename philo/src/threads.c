@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 18:43:45 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:46:08 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ static bool	philo_alive(t_philo *philo)
 	pthread_mutex_lock(&philo->philo_mutex);
 	alive = philo->status == ALIVE && (all()->num_eat == 0
 			|| philo->meals < all()->num_eat);
-	if (all()->num_eat > 0 && philo->meals >= all()->num_eat)
-		philo->status = FULL;
 	pthread_mutex_unlock(&philo->philo_mutex);
 	return (alive);
 }
