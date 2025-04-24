@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:07:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 17:56:17 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:35:57 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,19 @@ bool	create_philos(void)
 			return (free(philo), false);
 		ft_list_add(&all()->philos, philo, free);
 	}
+	return (true);
+}
+
+bool	init_all(int argc, char **argv)
+{
+	all()->num_philo = ft_atoll(argv[1]);
+	all()->time_to_die = ft_atoll(argv[2]);
+	all()->time_to_eat = ft_atoll(argv[3]);
+	all()->time_to_sleep = ft_atoll(argv[4]);
+	all()->end_simulation = false;
+	if (argc == 6)
+		all()->num_eat = ft_atoll(argv[5]);
+	if (pthread_mutex_init(&all()->data_mutex, NULL) != 0)
+		return (false);
 	return (true);
 }

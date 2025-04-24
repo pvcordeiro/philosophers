@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 18:28:13 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:40:12 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_all
 	size_t			time_to_sleep;
 	size_t			num_eat;
 	pthread_mutex_t	data_mutex;
+	bool			end_simulation;
 }	t_all;
 
 // singleton
@@ -92,12 +93,13 @@ void	release_forks(t_philo *philo);
 bool	create_philos(void);
 void	assign_forks(void);
 bool	create_forks(void);
+bool	init_all(int argc, char **argv);
 
 // helpers
 size_t	get_time(void);
 int		ft_usleep(size_t milliseconds);
-bool	init_all(int argc, char **argv);
 bool	check_valid_arg(int argc, char **argv);
+void	handle_one(t_philo *philo);
 
 // printer
 void	print_status(t_philo *philo, t_philo_action action);

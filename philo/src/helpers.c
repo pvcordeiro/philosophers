@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:13:33 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 16:04:49 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:39:50 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,6 @@ int	ft_usleep(size_t milliseconds)
 	return (0);
 }
 
-bool	init_all(int argc, char **argv)
-{
-	all()->num_philo = ft_atoll(argv[1]);
-	all()->time_to_die = ft_atoll(argv[2]);
-	all()->time_to_eat = ft_atoll(argv[3]);
-	all()->time_to_sleep = ft_atoll(argv[4]);
-	if (argc == 6)
-		all()->num_eat = ft_atoll(argv[5]);
-	if (pthread_mutex_init(&all()->data_mutex, NULL) != 0)
-		return (false);
-	return (true);
-}
-
 bool	check_valid_arg(int argc, char **argv)
 {
 	int	i;
@@ -54,4 +41,14 @@ bool	check_valid_arg(int argc, char **argv)
 			return (false);
 	}
 	return (true);
+}
+
+void	handle_one(t_philo *philo)
+{
+	pthread_mutex_lock(philo->right_fork);
+	print_status(philo, TAKE_FORK);
+	pthread_mutex_lock(&philo->philo_mutex);
+	philo->status = DEAD;
+	pthread_mutex_unlock(&philo->philo_mutex);
+	pthread_mutex_unlock(philo->right_fork);
 }

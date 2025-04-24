@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 18:28:28 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:43:45 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,20 @@ static bool	philo_alive(t_philo *philo)
 static void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
+	bool	go;
 
 	philo = (t_philo *)arg;
 	if (all()->num_philo == 1)
-	{
-		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, TAKE_FORK);
-		pthread_mutex_lock(&philo->philo_mutex);
-		philo->status = DEAD;
-		pthread_mutex_unlock(&philo->philo_mutex);
-		pthread_mutex_unlock(philo->right_fork);
-		return (NULL);
-	}
+		return (handle_one(philo), NULL);
 	if (philo->id % 2 == 0)
 		ft_usleep(1);
 	while (philo_alive(philo))
 	{
+		pthread_mutex_lock(&all()->data_mutex);
+		go = !all()->end_simulation;
+		pthread_mutex_unlock(&all()->data_mutex);
+		if (!go)
+			break ;
 		take_forks(philo);
 		eat(philo);
 		release_forks(philo);
@@ -93,14 +91,9 @@ static void	*death_monitor(void *arg)
 		}
 		if (all_full)
 		{
-			node = all()->philos;
-			while (node)
-			{
-				pthread_mutex_lock(&((t_philo *)node->data)->philo_mutex);
-				((t_philo *)node->data)->status = FULL;
-				pthread_mutex_unlock(&((t_philo *)node->data)->philo_mutex);
-				node = node->next;
-			}
+			pthread_mutex_lock(&all()->data_mutex);
+			all()->end_simulation = true;
+			pthread_mutex_unlock(&all()->data_mutex);
 			return (NULL);
 		}
 	}
