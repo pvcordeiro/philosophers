@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 17:40:43 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:04:05 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ bool	create_threads(void)
 			return (ft_printf("Error creating philosopher thread\n"), false);
 		node = node->next;
 	}
-	if (pthread_create(&all()->monitor_thread , NULL, death_monitor, NULL) != 0)
+	if (pthread_create(&all()->monitor_thread, NULL, death_monitor, NULL) != 0)
 		return (ft_printf("Error creating monitor thread\n"), false);
 	return (true);
 }
