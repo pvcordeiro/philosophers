@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:02:25 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 15:09:39 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 16:09:54 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ void	take_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	print_status(philo, EAT);
-	ft_usleep(all()->time_to_eat);
 	pthread_mutex_lock(&philo->philo_mutex);
 	philo->last_meal = get_time();
 	philo->meals++;
 	pthread_mutex_unlock(&philo->philo_mutex);
+	print_status(philo, EAT);
+	ft_usleep(all()->time_to_eat);
 }
 
 void	think(t_philo *philo)

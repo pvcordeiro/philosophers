@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/22 14:20:07 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 16:22:23 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,13 @@ static void	*philo_routine(void *arg)
 	{
 		pthread_mutex_lock(philo->right_fork);
 		print_status(philo, TAKE_RIGHT_FORK);
-		sleep_philo(philo);
 		pthread_mutex_lock(&philo->philo_mutex);
 		philo->status = DEAD;
 		pthread_mutex_unlock(&philo->philo_mutex);
 		pthread_mutex_unlock(philo->right_fork);
 		return (NULL);
 	}
-	if (philo->id % 2)
+	if (philo->id % 2 != 0)
 		ft_usleep(1);
 	while (philo_alive(philo))
 	{
@@ -104,7 +103,6 @@ static void	*death_monitor(void *arg)
 			}
 			return (NULL);
 		}
-		ft_usleep(1000);
 	}
 	return (NULL);
 }
@@ -113,7 +111,6 @@ bool	create_threads(void)
 {
 	t_list		*node;
 	t_philo		*philo;
-	pthread_t	monitor;
 
 	all()->start_time = get_time();
 	node = all()->philos;
@@ -121,13 +118,12 @@ bool	create_threads(void)
 	{
 		philo = node->data;
 		philo->last_meal = all()->start_time;
-		if (pthread_create(&philo->thread, NULL, philo_routine, philo))
+		if (pthread_create(&philo->thread, NULL, philo_routine, philo) != 0)
 			return (printf("Error creating philosopher thread\n"), false);
 		node = node->next;
 	}
-	if (pthread_create(&monitor, NULL, death_monitor, NULL) != 0)
+	if (pthread_create(&all()->monitor_thread , NULL, death_monitor, NULL) != 0)
 		return (printf("Error creating monitor thread\n"), false);
-	all()->monitor_thread = monitor;
 	return (true);
 }
 

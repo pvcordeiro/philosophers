@@ -44,13 +44,13 @@ fclean: clean
 re: fclean all
 
 test: all
-	@bash -c "./$(NAME) 10 800 200 200 10 || true"
+	@./$(NAME) 10 800 100 200 10
 
 e: all
-	@bash -c "./$(NAME) 10 800 200 200 10 > result.txt && grep eating result.txt | awk '{print $2}' | sort | uniq -c; rm result.txt  || true"
+	@./$(NAME) 10 800 200 200 10 > result.txt && grep eating result.txt | awk '{print $2}' | sort | uniq -c; rm result.txt
 
 val:
-	$(LEAK) ./$(NAME) 1 800 200 200
+	$(LEAK) ./$(NAME) 2 300 200 200
 
 hel:
-	$(HELL) ./$(NAME) 2 8100 2000 2000 1
+	$(HELL) ./$(NAME) 5 8100 2000 2000 7
