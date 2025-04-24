@@ -18,7 +18,8 @@ SRC =	src/main.c \
         src/utils/utils8.c \
         src/utils/utils9.c \
         src/utils/utils10.c \
-        src/utils/utils11.c
+        src/utils/utils11.c \
+		src/utils/ft_printf.c
 INCLUDES = -I headers
 OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
@@ -44,7 +45,7 @@ fclean: clean
 re: fclean all
 
 test: all
-	@./$(NAME) 10 800 100 200 10
+	@./$(NAME) 10 810 200 200 10
 
 e: all
 	@./$(NAME) 10 800 200 200 10 > result.txt && grep eating result.txt | awk '{print $2}' | sort | uniq -c; rm result.txt
@@ -53,4 +54,4 @@ val:
 	$(LEAK) ./$(NAME) 2 300 200 200
 
 hel:
-	$(HELL) ./$(NAME) 5 8100 2000 2000 7
+	$(HELL) ./$(NAME) 2 8100 2000 2000 1

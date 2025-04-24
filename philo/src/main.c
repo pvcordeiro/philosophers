@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/22 14:15:18 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:45:00 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,15 @@ int	cleanup_resources(void)
 int	main(int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
-		return (printf("Usage: np ttd tte tts [notepme]\n"));
+		return (ft_printf("Usage: np ttd tte tts [notepme]\n"));
 	if (!check_valid_arg(argc, argv))
-		return (printf("Invalid argument\n"));
+		return (ft_printf("Invalid argument\n"));
 	if (!init_all(argc, argv))
-		return (printf("Error initializing data\n"));
+		return (ft_printf("Error initializing data\n"));
 	if (!create_forks())
-		return (printf("Error creating forks\n"));
+		return (ft_printf("Error creating forks\n"));
 	if (!create_philos())
-		return (printf("Error creating philosophers\n"));
+		return (ft_printf("Error creating philosophers\n"));
 	assign_forks();
 	if (!create_threads())
 		return (cleanup_resources());
