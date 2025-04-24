@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 18:48:33 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 19:30:35 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ typedef struct s_all
 	size_t			time_to_sleep;
 	size_t			num_eat;
 	pthread_mutex_t	data_mutex;
-	bool			end_simulation;
+	bool			dead_philo;
+	bool			filled;
 }	t_all;
 
 // singleton

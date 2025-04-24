@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 18:49:45 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 19:32:59 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static bool	philo_alive(t_philo *philo)
 static void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
-	bool	go;
+	bool	live;
+	bool	full;
 
 	philo = (t_philo *)arg;
 	if (all()->num_philo == 1)
@@ -34,16 +35,17 @@ static void	*philo_routine(void *arg)
 		ft_usleep(1);
 	while (philo_alive(philo))
 	{
-		pthread_mutex_lock(&all()->data_mutex);
-		go = !all()->end_simulation;
-		pthread_mutex_unlock(&all()->data_mutex);
-		if (!go)
-			break ;
 		take_forks(philo);
 		eat(philo);
 		release_forks(philo);
 		sleep_philo(philo);
 		think(philo);
+		pthread_mutex_lock(&all()->data_mutex);
+		live = !all()->dead_philo;
+		full = !all()->filled;
+		pthread_mutex_unlock(&all()->data_mutex);
+		if (!live || !full)
+			return (NULL);
 	}
 	return (NULL);
 }
@@ -51,7 +53,6 @@ static void	*philo_routine(void *arg)
 static void	*death_monitor(void *arg)
 {
 	t_list	*node;
-	t_list	*p_node;
 	t_philo	*philo;
 	bool	all_full;
 
@@ -71,14 +72,9 @@ static void	*death_monitor(void *arg)
 				philo->status = DEAD;
 				pthread_mutex_unlock(&philo->philo_mutex);
 				print_status(philo, DIE);
-				p_node = all()->philos;
-				while (p_node)
-				{
-					pthread_mutex_lock(&((t_philo *)p_node->data)->philo_mutex);
-					((t_philo *)p_node->data)->status = DEAD;
-					pthread_mutex_unlock(&((t_philo *)p_node->data)->philo_mutex);
-					p_node = p_node->next;
-				}
+				pthread_mutex_lock(&all()->data_mutex);
+				all()->dead_philo = true;
+				pthread_mutex_unlock(&all()->data_mutex);
 				return (NULL);
 			}
 			if (all_full && philo->meals < all()->num_eat)
@@ -89,7 +85,7 @@ static void	*death_monitor(void *arg)
 		if (all_full)
 		{
 			pthread_mutex_lock(&all()->data_mutex);
-			all()->end_simulation = true;
+			all()->filled = true;
 			pthread_mutex_unlock(&all()->data_mutex);
 			return (NULL);
 		}

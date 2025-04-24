@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:07:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 18:35:57 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 19:30:36 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ bool	init_all(int argc, char **argv)
 	all()->time_to_die = ft_atoll(argv[2]);
 	all()->time_to_eat = ft_atoll(argv[3]);
 	all()->time_to_sleep = ft_atoll(argv[4]);
-	all()->end_simulation = false;
+	all()->dead_philo = false;
+	all()->filled = false;
 	if (argc == 6)
 		all()->num_eat = ft_atoll(argv[5]);
 	if (pthread_mutex_init(&all()->data_mutex, NULL) != 0)
