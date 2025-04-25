@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:07:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/25 15:39:23 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:31:10 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,25 @@ bool	init_all(int argc, char **argv)
 		all()->num_eat = ft_atoll(argv[5]);
 	if (pthread_mutex_init(&all()->data_mutex, NULL) != 0)
 		return (false);
+	return (true);
+}
+
+bool	all_full(void)
+{
+	t_list	*node;
+	t_philo	*philo;
+
+	if (!all()->num_eat)
+		return (false);
+	node = all()->philos;
+	while (node)
+	{
+		philo = node->data;
+		pthread_mutex_lock(&philo->philo_mutex);
+		if (!philo->full)
+			return (pthread_mutex_unlock(&philo->philo_mutex), false);
+		pthread_mutex_unlock(&philo->philo_mutex);
+		node = node->next;
+	}
 	return (true);
 }

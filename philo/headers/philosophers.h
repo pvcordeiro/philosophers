@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/25 15:39:15 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:31:19 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ bool	create_philos(void);
 void	assign_forks(void);
 bool	create_forks(void);
 bool	init_all(int argc, char **argv);
+bool	all_full(void);
 
 // helpers
 size_t	get_time(void);

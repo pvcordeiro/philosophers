@@ -6,31 +6,11 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/25 16:18:11 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:34:02 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
-
-bool	all_full(void)
-{
-	t_list	*node;
-	t_philo	*philo;
-
-	if (!all()->num_eat)
-		return (false);
-	node = all()->philos;
-	while (node)
-	{
-		philo = node->data;
-		pthread_mutex_lock(&philo->philo_mutex);
-		if (!philo->full)
-			return (pthread_mutex_unlock(&philo->philo_mutex), false);
-		pthread_mutex_unlock(&philo->philo_mutex);
-		node = node->next;
-	}
-	return (true);
-}
 
 static void	*philo_routine(void *arg)
 {
@@ -45,11 +25,13 @@ static void	*philo_routine(void *arg)
 			return (NULL);
 		take_forks(philo);
 		eat(philo);
+		release_forks(philo);
 		pthread_mutex_lock(&philo->philo_mutex);
 		if (all()->num_eat && philo->meals == all()->num_eat)
 			philo->full = true;
+		if (philo->full)
+			return (pthread_mutex_unlock(&philo->philo_mutex), NULL);
 		pthread_mutex_unlock(&philo->philo_mutex);
-		release_forks(philo);
 		sleep_philo(philo);
 		think(philo);
 		pthread_mutex_lock(&all()->data_mutex);
@@ -83,6 +65,7 @@ static void	*death_monitor(void *arg)
 {
 	t_list	*node;
 	t_philo	*philo;
+	bool	is_full;
 
 	(void)arg;
 	while (42)
@@ -93,7 +76,10 @@ static void	*death_monitor(void *arg)
 			philo = node->data;
 			if (is_kaput(philo))
 				return (NULL);
-			if (all_full() || philo->full)
+			pthread_mutex_lock(&philo->philo_mutex);
+			is_full = philo->full;
+			pthread_mutex_unlock(&philo->philo_mutex);
+			if (all_full() || is_full)
 				return (NULL);
 			node = node->next;
 		}
