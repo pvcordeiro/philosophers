@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:02:25 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/25 15:47:15 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/25 16:17:21 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	take_forks(t_philo *philo)
 {
-	if (philo->left_fork < philo->right_fork)
+	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->left_fork);
 		print_status(philo, TAKE_FORK);

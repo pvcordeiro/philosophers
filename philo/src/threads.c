@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/25 16:10:36 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/25 16:18:11 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ static void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (all()->num_philo == 1)
 		return (handle_one(philo), NULL);
-	if (philo->id % 2 == 0)
-		ft_usleep(1);
 	while (philo_alive(philo))
 	{
 		if (philo->full)
