@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/25 14:29:13 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/25 15:39:15 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct e_philo
 	pthread_mutex_t		philo_mutex;
 	size_t				last_meal;
 	size_t				meals;
+	bool				full;
 	pthread_t			thread;
 }	t_philo;
 
@@ -65,7 +66,6 @@ typedef struct s_all
 	size_t			num_eat;
 	pthread_mutex_t	data_mutex;
 	bool			dead_philo;
-	bool			filled;
 }	t_all;
 
 // singleton
