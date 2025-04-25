@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 19:42:46 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 20:55:58 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 static void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
-	bool	live;
-	bool	full;
 
 	philo = (t_philo *)arg;
 	if (all()->num_philo == 1)
@@ -25,19 +23,40 @@ static void	*philo_routine(void *arg)
 		ft_usleep(1);
 	while (philo_alive(philo))
 	{
+		pthread_mutex_lock(&all()->data_mutex);
+		if (all()->filled)
+			return (pthread_mutex_unlock(&all()->data_mutex), NULL);
+		pthread_mutex_unlock(&all()->data_mutex);
 		take_forks(philo);
 		eat(philo);
 		release_forks(philo);
 		sleep_philo(philo);
 		think(philo);
 		pthread_mutex_lock(&all()->data_mutex);
-		live = !all()->dead_philo;
-		full = !all()->filled;
+		if (all()->dead_philo)
+			return (pthread_mutex_unlock(&all()->data_mutex), NULL);
 		pthread_mutex_unlock(&all()->data_mutex);
-		if (!live || !full)
-			return (NULL);
 	}
 	return (NULL);
+}
+
+static bool	is_kaput(t_philo *philo, bool *all_full)
+{
+	pthread_mutex_lock(&philo->philo_mutex);
+	if ((get_time() - philo->last_meal) > all()->time_to_die)
+	{
+		philo->status = DEAD;
+		pthread_mutex_unlock(&philo->philo_mutex);
+		print_status(philo, DIE);
+		pthread_mutex_lock(&all()->data_mutex);
+		all()->dead_philo = true;
+		pthread_mutex_unlock(&all()->data_mutex);
+		return (true);
+	}
+	if (philo->meals < all()->num_eat)
+		*all_full = false;
+	pthread_mutex_unlock(&philo->philo_mutex);
+	return (false);
 }
 
 static void	*death_monitor(void *arg)
@@ -54,20 +73,8 @@ static void	*death_monitor(void *arg)
 		while (node)
 		{
 			philo = node->data;
-			pthread_mutex_lock(&philo->philo_mutex);
-			if ((get_time() - philo->last_meal) > all()->time_to_die)
-			{
-				philo->status = DEAD;
-				pthread_mutex_unlock(&philo->philo_mutex);
-				print_status(philo, DIE);
-				pthread_mutex_lock(&all()->data_mutex);
-				all()->dead_philo = true;
-				pthread_mutex_unlock(&all()->data_mutex);
+			if (is_kaput(philo, &all_full))
 				return (NULL);
-			}
-			if (philo->meals < all()->num_eat)
-				all_full = false;
-			pthread_mutex_unlock(&philo->philo_mutex);
 			node = node->next;
 		}
 		if (all_full)
