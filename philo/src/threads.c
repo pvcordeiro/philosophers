@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/25 17:34:02 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:44:11 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ static void	*philo_routine(void *arg)
 		return (handle_one(philo), NULL);
 	while (philo_alive(philo))
 	{
-		if (philo->full)
-			return (NULL);
 		take_forks(philo);
 		eat(philo);
 		release_forks(philo);
