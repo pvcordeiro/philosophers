@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/24 19:42:09 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/25 14:29:13 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef enum e_status
 
 typedef struct e_philo
 {
-	int					id;
+	size_t				id;
 	t_status			status;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;

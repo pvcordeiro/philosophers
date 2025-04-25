@@ -45,10 +45,10 @@ fclean: clean
 re: fclean all
 
 test: all
-	@./$(NAME) 10 810 200 200 10
+	@./$(NAME) 5 800 200 200 7
 
 e: all
-	@./$(NAME) 10 800 200 200 10 > result.txt && grep eating result.txt | awk '{print $2}' | sort | uniq -c; rm result.txt
+	@./$(NAME) 5 800 200 200 7 > result.txt && grep eating result.txt | awk '{print $2}' | sort | uniq -c; rm result.txt
 
 val:
 	$(LEAK) ./$(NAME) 2 300 200 200
