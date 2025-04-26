@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:13:33 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/25 16:41:01 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/26 12:20:04 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ bool	philo_alive(t_philo *philo)
 
 	pthread_mutex_lock(&all()->data_mutex);
 	pthread_mutex_lock(&philo->philo_mutex);
-	alive = philo->status == ALIVE;
+	alive = philo->status == ALIVE && !all()->dead_philo;
 	pthread_mutex_unlock(&philo->philo_mutex);
 	pthread_mutex_unlock(&all()->data_mutex);
 	return (alive);

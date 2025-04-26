@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/25 17:44:11 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/26 12:21:49 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,6 @@ static void	*philo_routine(void *arg)
 		pthread_mutex_unlock(&philo->philo_mutex);
 		sleep_philo(philo);
 		think(philo);
-		pthread_mutex_lock(&all()->data_mutex);
-		if (all()->dead_philo)
-			return (pthread_mutex_unlock(&all()->data_mutex), NULL);
-		pthread_mutex_unlock(&all()->data_mutex);
 	}
 	return (NULL);
 }
