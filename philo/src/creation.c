@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:07:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/26 11:59:48 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/26 12:04:52 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,10 @@ bool	create_forks(void)
 
 void	assign_forks(void)
 {
-	size_t	num_philos;
 	t_list	*philo_node;
 	t_list	*fork_node;
 	t_philo	*philo;
 
-	num_philos = all()->num_philo;
 	philo_node = all()->philos;
 	fork_node = all()->forks;
 	while (philo_node)
