@@ -51,7 +51,7 @@ e: all
 	@./$(NAME) 5 800 200 200 7 > result.txt && grep eating result.txt | awk '{print $2}' | sort | uniq -c; rm result.txt
 
 val:
-	$(LEAK) ./$(NAME) 2 300 200 200
+	$(LEAK) ./$(NAME) 2 800 200 200
 
 hel:
 	$(HELL) ./$(NAME) 2 8100 2000 2000 1
