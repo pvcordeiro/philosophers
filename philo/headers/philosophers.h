@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:42:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/25 17:31:19 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/26 13:00:01 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,11 @@ void	release_forks(t_philo *philo);
 bool	create_philos(void);
 void	assign_forks(void);
 bool	create_forks(void);
-bool	init_all(int argc, char **argv);
-bool	all_full(void);
 
 // helpers
+bool	all_full(void);
 size_t	get_time(void);
 int		ft_usleep(size_t milliseconds);
-bool	check_valid_arg(int argc, char **argv);
 void	handle_one(t_philo *philo);
 bool	philo_alive(t_philo *philo);
 

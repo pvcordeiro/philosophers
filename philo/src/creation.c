@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:07:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/26 12:04:52 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/26 13:00:05 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,40 +78,6 @@ bool	create_philos(void)
 		if (pthread_mutex_init(&philo->philo_mutex, NULL) != 0)
 			return (free(philo), false);
 		ft_list_add(&all()->philos, philo, free);
-	}
-	return (true);
-}
-
-bool	init_all(int argc, char **argv)
-{
-	all()->num_philo = ft_atoll(argv[1]);
-	all()->time_to_die = ft_atoll(argv[2]);
-	all()->time_to_eat = ft_atoll(argv[3]);
-	all()->time_to_sleep = ft_atoll(argv[4]);
-	all()->dead_philo = false;
-	if (argc == 6)
-		all()->num_eat = ft_atoll(argv[5]);
-	if (pthread_mutex_init(&all()->data_mutex, NULL) != 0)
-		return (false);
-	return (true);
-}
-
-bool	all_full(void)
-{
-	t_list	*node;
-	t_philo	*philo;
-
-	if (!all()->num_eat)
-		return (false);
-	node = all()->philos;
-	while (node)
-	{
-		philo = node->data;
-		pthread_mutex_lock(&philo->philo_mutex);
-		if (!philo->full)
-			return (pthread_mutex_unlock(&philo->philo_mutex), false);
-		pthread_mutex_unlock(&philo->philo_mutex);
-		node = node->next;
 	}
 	return (true);
 }

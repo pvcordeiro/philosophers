@@ -6,11 +6,31 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:13:33 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/26 12:44:30 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/26 13:00:51 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
+
+bool	all_full(void)
+{
+	t_list	*node;
+	t_philo	*philo;
+
+	if (!all()->num_eat)
+		return (false);
+	node = all()->philos;
+	while (node)
+	{
+		philo = node->data;
+		pthread_mutex_lock(&philo->philo_mutex);
+		if (!philo->full)
+			return (pthread_mutex_unlock(&philo->philo_mutex), false);
+		pthread_mutex_unlock(&philo->philo_mutex);
+		node = node->next;
+	}
+	return (true);
+}
 
 size_t	get_time(void)
 {
@@ -28,19 +48,6 @@ int	ft_usleep(size_t milliseconds)
 	while ((get_time() - start) < milliseconds)
 		usleep(100);
 	return (0);
-}
-
-bool	check_valid_arg(int argc, char **argv)
-{
-	int	i;
-
-	i = 0;
-	while (++i < argc)
-	{
-		if (ft_atoll(argv[i]) <= 0)
-			return (false);
-	}
-	return (true);
 }
 
 void	handle_one(t_philo *philo)

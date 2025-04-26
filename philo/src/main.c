@@ -6,11 +6,38 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/25 16:28:36 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/26 12:59:37 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
+
+static bool	check_valid_arg(int argc, char **argv)
+{
+	int	i;
+
+	i = 0;
+	while (++i < argc)
+	{
+		if (ft_atoll(argv[i]) <= 0)
+			return (false);
+	}
+	return (true);
+}
+
+static bool	init_all(int argc, char **argv)
+{
+	all()->num_philo = ft_atoll(argv[1]);
+	all()->time_to_die = ft_atoll(argv[2]);
+	all()->time_to_eat = ft_atoll(argv[3]);
+	all()->time_to_sleep = ft_atoll(argv[4]);
+	all()->dead_philo = false;
+	if (argc == 6)
+		all()->num_eat = ft_atoll(argv[5]);
+	if (pthread_mutex_init(&all()->data_mutex, NULL) != 0)
+		return (false);
+	return (true);
+}
 
 static int	destructor(void)
 {
