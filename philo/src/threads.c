@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:59:28 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/26 12:47:59 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/26 13:43:33 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static void	*death_monitor(void *arg)
 				return (NULL);
 			node = node->next;
 		}
+		usleep(1);
 	}
 	return (NULL);
 }
