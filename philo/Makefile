@@ -6,7 +6,6 @@ SRC =	src/main.c \
 		src/creation.c \
 		src/helpers.c \
 		src/printer.c \
-		src/singleton.c \
 		src/threads.c \
         src/utils/utils1.c \
         src/utils/utils2.c \

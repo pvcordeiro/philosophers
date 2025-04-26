@@ -6,11 +6,18 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 20:43:38 by paude-so          #+#    #+#             */
-/*   Updated: 2025/04/26 12:59:37 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/26 13:01:58 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
+
+t_all	*all(void)
+{
+	static t_all	all;
+
+	return (&all);
+}
 
 static bool	check_valid_arg(int argc, char **argv)
 {
